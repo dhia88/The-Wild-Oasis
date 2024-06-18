@@ -5,21 +5,23 @@ import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import Empty from "../../ui/Empty";
 
 function CabinTable() {
   const { isLoading, cabins } = useCabins();
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
+  if (!cabins.length) return <Empty resourceName="cabins" />;
 
   // 1) Filter
   const filterValue = searchParams.get("discount") || "all";
 
   let filteredCabins;
   if (filterValue === "all") filteredCabins = cabins;
-  if (filterValue === "no-discount")
+  else if (filterValue === "no-discount")
     filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
-  if (filterValue === "with-discount")
+  else if (filterValue === "with-discount")
     filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
 
   // 2) Sort

@@ -34,8 +34,18 @@ const Amount = styled.div`
   font-weight: 500;
 `;
 
-function BookingRow({
-  booking: {
+function BookingRow({ booking }) {
+  if (
+    !booking ||
+    !booking.guests ||
+    !booking.cabins ||
+    !booking.startDate ||
+    !booking.endDate
+  ) {
+    return <div>Loading...</div>;
+  }
+
+  const {
     id: bookingId,
     created_at,
     startDate,
@@ -46,8 +56,8 @@ function BookingRow({
     status,
     guests: { fullName: guestName, email },
     cabins: { name: cabinName },
-  },
-}) {
+  } = booking;
+
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
